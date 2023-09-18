@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "dungeoneer-remake",
+  "outputfilename": "dungeoneer-remake",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Ethan Gray",
+    "email": "74423016+eef-g@users.noreply.github.com"
+  }
+}
