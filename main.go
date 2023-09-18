@@ -15,7 +15,7 @@ var assets embed.FS
 
 func main() {
 	// Read the contents of the Slimev1.png file into a byte slice
-    iconBytes, icon_err := ioutil.ReadFile("./Slimev1.png")
+    iconBytes, icon_err := ioutil.ReadFile("./build/appicon.png");
     if icon_err != nil {
         panic(icon_err)
     };
