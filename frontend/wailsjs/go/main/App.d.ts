@@ -9,3 +9,5 @@ export function GenerateDungeon():Promise<string>;
 export function GetRoomStats():Promise<dungeons.Room>;
 
 export function ProgressInDungeon():Promise<void>;
+
+export function WipeDungeon():Promise<void>;

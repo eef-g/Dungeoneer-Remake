@@ -36,6 +36,12 @@ func (a *App) GenerateDungeon() string{
 	return a.current_dungeon.ToString();
 }
 
+func (a *App) WipeDungeon() {
+	if(a.current_dungeon != nil) {
+		a.current_dungeon.WipeDungeon();
+	}
+}
+
 func (a *App) GetRoomStats() *dungeons.Room {
 	if(a.current_dungeon != nil) {
 		return a.current_dungeon.CurrentRoom;

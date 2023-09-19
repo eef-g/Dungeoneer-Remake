@@ -17,3 +17,7 @@ export function GetRoomStats() {
 export function ProgressInDungeon() {
   return window['go']['main']['App']['ProgressInDungeon']();
 }
+
+export function WipeDungeon() {
+  return window['go']['main']['App']['WipeDungeon']();
+}
