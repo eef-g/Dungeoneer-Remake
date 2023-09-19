@@ -1,6 +1,7 @@
 import React from "react";
 import { DungeonToString, GetRoomStats, ProgressInDungeon } from "../../wailsjs/go/main/App";
 import ImageButton from "../components/ImageButton";
+import Monster from "../components/Monster";
 import buttonImage from "../assets/images/button-bg.png"
 
 export default function Game() {
@@ -41,16 +42,8 @@ export default function Game() {
     return (
         // Eventually, replace the main <div> w/ a <BackgroundImage> component
         <div>
-            <h1>Game</h1>
             <ImageButton backgroundImage={buttonImage} onClick={NextDungeonRoom} text="Next Room"/>
-            <p>Current room stats:</p>
-            <ul>
-                <li>Current Monster: {monsterName}</li>
-                <li>Current Monster Health: {monsterHealth}</li>
-                <li>Current Monster Attack: {monsterAttack}</li>
-                <li>Current Monster Attack Bonus: {monsterAttackBonus}</li>
-                <li>Current Monster Image Path: <p>{monsterImagePath}</p></li>
-            </ul>
+            <Monster image={monsterImagePath} />
         </div>
     );
 }

@@ -16,8 +16,8 @@ This is an official remake of my [Dungeoneering](https://github.com/eef-g/Dungeo
 - [x] Move between scenes
 - [x] Generate dungeons for a game
 - [x] Populate each room in a dungeon
-- [ ] Display the current monster you're fighting <-- Current Task
-- [ ] Text Generation
+- [x] Display the current monster you're fighting 
+- [ ] Text Generation &larr; Current Step
 - [ ] Attack, Defend, Heal, Run options
 - [ ] Victory & Defeat
 - [ ] Leaderboard (Potentially Global -- HARD MAYBE)

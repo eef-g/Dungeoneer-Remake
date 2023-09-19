@@ -17,7 +17,8 @@ type Monster struct {
 
 func (m *Monster) Print() {
 	// For now, just print the name
-	fmt.Println(m.Name);
+	// We'll want to go ahead and eventually print out the other stats too
+	fmt.Printf("Name: %s\nHP: %d\nAttack: %d\nImage Path: '%v'\n", m.Name, m.HP, m.Attack, m.Image);
 }
 
 func (m* Monster) ToString() string {
@@ -33,7 +34,7 @@ type Monsters struct {
 
 func GenerateMonsters() *Monsters {
 	// CHANGE THIS IF THE ROOT FOLDER CHANGES
-	root_folder := "../../../backend/monsters/%v";
+	root_folder := "/src/assets/images/monsters/%v";
 	
 	monsters_array := []*Monster{
 		{
@@ -41,28 +42,63 @@ func GenerateMonsters() *Monsters {
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: fmt.Sprintf(root_folder, "slime.png"),
+			Image: fmt.Sprintf(root_folder, "Slime.png"),
 		},
 		{
-			Name: "Goblin",
+			Name: "Goobo",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: fmt.Sprintf(root_folder, "goblin.png"),
+			Image: fmt.Sprintf(root_folder, "Gooblin.png"),
 		},
 		{
-			Name: "Orc",
+			Name: "Manager",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: fmt.Sprintf(root_folder, "orc.png"),
+			Image: fmt.Sprintf(root_folder, "Manager.png"),
 		},
 		{
-			Name: "Ogre",
+			Name: "Sneezle",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: fmt.Sprintf(root_folder, "ogre.png"),
+			Image: fmt.Sprintf(root_folder, "Sneezle.png"),
+		},
+		{
+			Name: "Loan",
+			HP: 10,
+			Attack: 2,
+			AttackBonus: 2,
+			Image: fmt.Sprintf(root_folder, "Loan.png"),
+		},
+		{
+			Name: "Meep",
+			HP: 10,
+			Attack: 2,
+			AttackBonus: 2,
+			Image: fmt.Sprintf(root_folder, "Meep.png"),
+		},
+		{
+			Name: "Skeleton",
+			HP: 10,
+			Attack: 2,
+			AttackBonus: 2,
+			Image: fmt.Sprintf(root_folder, "Skeleton.png"),
+		},
+		{
+			Name: "Pinchington",
+			HP: 10,
+			Attack: 2,
+			AttackBonus: 2,
+			Image: fmt.Sprintf(root_folder, "Pinchington.png"),
+		},
+		{
+			Name: "Squiffer",
+			HP: 10,
+			Attack: 2,
+			AttackBonus: 2,
+			Image: fmt.Sprintf(root_folder, "Squiffer.png"),
 		},
 	};
 
