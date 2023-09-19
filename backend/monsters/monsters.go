@@ -15,16 +15,13 @@ type Monster struct {
 }
 
 
-
-
 func (m *Monster) Print() {
-	// Print the monster
 	// For now, just print the name
 	fmt.Println(m.Name);
 }
 
 func (m* Monster) ToString() string {
-	return fmt.Sprintf("Name: %s, HP: %d, Attack: %d, AttackBonus: %d, ImagePath: %s", m.Name, m.HP, m.Attack, m.AttackBonus, m.Image);
+	return fmt.Sprintf("Name: %s, HP: %d, Attack: %d, AttackBonus: %d, ImagePath: '%s'", m.Name, m.HP, m.Attack, m.AttackBonus, m.Image);
 }
 
 
@@ -35,34 +32,37 @@ type Monsters struct {
 }
 
 func GenerateMonsters() *Monsters {
+	// CHANGE THIS IF THE ROOT FOLDER CHANGES
+	root_folder := "../../../backend/monsters/%v";
+	
 	monsters_array := []*Monster{
-		&Monster{
+		{
 			Name: "Slime",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: "slime.png",
+			Image: fmt.Sprintf(root_folder, "slime.png"),
 		},
-		&Monster{
+		{
 			Name: "Goblin",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: "goblin.png",
+			Image: fmt.Sprintf(root_folder, "goblin.png"),
 		},
-		&Monster{
+		{
 			Name: "Orc",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: "orc.png",
+			Image: fmt.Sprintf(root_folder, "orc.png"),
 		},
-		&Monster{
+		{
 			Name: "Ogre",
 			HP: 10,
 			Attack: 2,
 			AttackBonus: 2,
-			Image: "ogre.png",
+			Image: fmt.Sprintf(root_folder, "ogre.png"),
 		},
 	};
 
@@ -70,6 +70,7 @@ func GenerateMonsters() *Monsters {
 		Monsters: monsters_array,
 	};
 }
+
 
 func NewMonster(possible_monsters *Monsters) *Monster {
 	// Choose a random monster from the Monsters struct

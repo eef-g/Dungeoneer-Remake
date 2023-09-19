@@ -62,12 +62,14 @@ func (d *Dungeon) GenerateDungeon() {
 }
 
 func (d *Dungeon) WipeDungeon() {
-	// Loop through the dungeon and delete all the rooms
-	for d.FirstRoom != nil {
-		next := d.FirstRoom.NextRoom
-		d.FirstRoom = nil
-		d.FirstRoom = next
-		d.NumRooms--
+	if d.FirstRoom == nil {
+		// Loop through the dungeon and delete all the rooms
+		for d.FirstRoom != nil {
+			next := d.FirstRoom.NextRoom
+			d.FirstRoom = nil
+			d.FirstRoom = next
+			d.NumRooms--
+		}
 	}
 	d.LastRoom = nil
 	d.CurrentRoom = nil
@@ -78,6 +80,14 @@ func (d *Dungeon) Print() {
 }
 
 func (d *Dungeon) ToString() string {
-	// Will edit this later
-	return d.FirstRoom.Enemy.ToString();
+	// Loop through the dungeon and print out the rooms
+	fmt.Println("");
+	room := d.FirstRoom;
+	dungeon_string := "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n";
+	for room != nil {
+		dungeon_string += fmt.Sprintf("Room: %s\n", room.Enemy.ToString());
+		room = room.NextRoom;
+	}
+	dungeon_string += "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n";
+	return dungeon_string;
 }
