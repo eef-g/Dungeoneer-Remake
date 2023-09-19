@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"math/rand"
 	"eef.dungeoneer/backend/dungeons"
 )
 
@@ -27,7 +26,6 @@ func (a *App) startup(ctx context.Context) {
 // GenerateDungeon returns a string value of the generated dungeon [This is just for testing purposes]
 func (a *App) GenerateDungeon() string{
 	dungeon := dungeons.NewDungeon();
-	a.num_rooms = rand.Intn(10);
+	dungeon.GenerateDungeon();
 	return dungeon.ToString();
 }
-
