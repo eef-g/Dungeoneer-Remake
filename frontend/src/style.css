@@ -24,7 +24,7 @@ body {
     font-family: "Runescape";
     font-style: normal;
     font-weight: 400;
-    src: local(""), url("./assets/fonts/runescape_uf.ttf") format("truetype");
+    src: local(""), url("./assets/fonts/RuneScape.woff2") format("woff2");
 }
 
 #app {

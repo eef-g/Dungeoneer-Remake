@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"math/rand"
+	"eef.dungeoneer/backend/dungeons"
 )
 
 // App struct
@@ -24,8 +24,10 @@ func (a *App) startup(ctx context.Context) {
 	a.num_rooms = 0
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
+// GenerateDungeon returns a string value of the generated dungeon [This is just for testing purposes]
+func (a *App) GenerateDungeon() string{
+	dungeon := dungeons.NewDungeon();
 	a.num_rooms = rand.Intn(10);
-	return fmt.Sprintf("Hello %s, you'll be running a dungeon with %d rooms!", name, a.num_rooms);
+	return dungeon.ToString();
 }
+

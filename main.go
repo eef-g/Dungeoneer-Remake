@@ -14,6 +14,7 @@ import (
 var assets embed.FS
 
 func main() {
+
 	// Read the contents of the Slimev1.png file into a byte slice
     iconBytes, icon_err := ioutil.ReadFile("./build/appicon.png");
     if icon_err != nil {
@@ -36,6 +37,8 @@ func main() {
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup:        app.startup,
+
+		// This statement right here binds any function from the App interface to the frontend
 		Bind: []interface{}{
 			app,
 		},

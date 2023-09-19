@@ -5,8 +5,8 @@ function BackgroundImage(props) {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: '100% 100%',
     backgroundPosition: 'top',
-    width: '409px',
-    height: '627px',
+    width: '100vw',
+    height: '100vh',
     margin: '0',
   };
 

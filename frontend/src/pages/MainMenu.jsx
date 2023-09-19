@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GenerateDungeon } from '../../wailsjs/go/main/App';
 import '../style.css';
 import '../components/ImageButton.jsx';
 import '../components/BackgroundImage.jsx';
@@ -15,6 +16,7 @@ import ImageButton from '../components/ImageButton.jsx';
 
 export default function MainMenu() {
     const navigate  = useNavigate(); // Get the history object using the useHistory hook
+    let [dungeon, setDungeon] = React.useState("Dungeon Info Goes Here"); // Create a state variable for the dungeon
     
     const appStyle = {
         display: 'flex', // Set display to flex
@@ -33,16 +35,20 @@ export default function MainMenu() {
     }
 
     function startGame() {
-        console.log("Starting game...");
-        navigate("/game");
+        GenerateDungeon().then((result) => {
+            console.log(result);
+            setDungeon(result);
+            //navigate("/game");
+          });
     }
 
     return (
         <BackgroundImage backgroundImage={mainMenuImage}>
             <div id="main-menu" style={appStyle}>
-                <div id="title" className="title" style={titleStyle}>Dungeoneering</div>
+                <div id="title" className="title" style={titleStyle}>Dungeoneer</div>
                 <div id="input" className="input-box">
                     <ImageButton backgroundImage={buttonImage} onClick={startGame} text="Begin"/>
+                    <p id="dungeon-info">{dungeon}</p>
                 </div>
             </div>
         </BackgroundImage>
