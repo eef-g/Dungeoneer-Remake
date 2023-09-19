@@ -4,8 +4,8 @@
 
 This is an official remake of my [Dungeoneering](https://github.com/eef-g/Dungeoneer) repository! The project is being done to practice the two main technologies that I plan on using for my Senior project:
 <p>
-  <a href="https://go.dev/" target ="_blank"> <img src="https://img.icons8.com/color/48/000000/golang.png" alt="Golang" width="40" height="40"/> </a>
   <a href="https://react.dev/" target="_blank"> <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="40" height="40"/></a>
+  <a href="https://go.dev/" target ="_blank"> <img src="https://img.icons8.com/color/48/000000/golang.png" alt="Golang" width="40" height="40"/> </a>
   <a href="https://wails.io/" target="_blank"> <img src="https://raw.githubusercontent.com/wailsapp/wails/master/assets/images/logo-universal.png" alt="Wails" width="40" height="40"/></a>
 </p>
 <p>
