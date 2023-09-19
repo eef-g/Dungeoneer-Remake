@@ -13,12 +13,12 @@ This is an official remake of my [Dungeoneering](https://github.com/eef-g/Dungeo
 </p>
 
 ## Roadmap
-Current Task: Move between screens
-
-- [ ] Generate dungeons for a game
-- [ ] Populate each room in a dungeon
-- [ ] Attack, Defend, Heal, Run options
+- [x] Move between scenes
+- [x] Generate dungeons for a game
+- [x] Populate each room in a dungeon
+- [ ] Display the current monster you're fighting <-- Current Task
 - [ ] Text Generation
+- [ ] Attack, Defend, Heal, Run options
 - [ ] Victory & Defeat
 - [ ] Leaderboard (Potentially Global -- HARD MAYBE)
 
