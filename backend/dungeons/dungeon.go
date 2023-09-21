@@ -35,7 +35,12 @@ func (d *Dungeon) GenerateDungeon() {
 	// Make sure the dungeon is empty first
 	d.WipeDungeon();
 	// Generate a random number of rooms
+
 	d.NumRooms = rand.Intn(10);
+	// Eventually, we'll make the min rooms different
+	for d.NumRooms < 3 {
+        d.NumRooms = rand.Intn(10)
+    }
 
 	// Loop through the number of rooms and generate a new room for each one and assign it to the dungeon
 	for i := 0; i < d.NumRooms; i++ {
