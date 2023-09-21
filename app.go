@@ -1,8 +1,9 @@
 package main
 
 import (
+	"container/list"
 	"context"
-
+	"log"
 	"eef.dungeoneer/backend/dungeons"
 	"eef.dungeoneer/backend/monsters"
 )
@@ -12,6 +13,7 @@ type App struct {
 	ctx context.Context
 	num_rooms int
 	current_dungeon *dungeons.Dungeon
+	text_queue list.List
 }
 
 // NewApp creates a new App application struct
@@ -25,6 +27,7 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	a.num_rooms = 0
 	a.current_dungeon = dungeons.NewDungeon()
+	a.text_queue = list.List{}
 }
 
 // GenerateDungeon returns a string value of the generated dungeon [This is just for testing purposes]
@@ -74,4 +77,16 @@ func (a *App) DungeonToString() string{
 		return a.current_dungeon.ToString();
 	}
 	return "No dungeon generated yet";
+}
+
+func (a * App) AddTextToQueue(text string) {
+	a.text_queue.PushBack(text);
+	log.Default().Println("Added text to queue: " + text);
+}
+
+func (a* App) CheckTextQueue() string {
+	if(a.text_queue.Len() > 0) {
+		return a.text_queue.Remove(a.text_queue.Front()).(string);
+	}
+	return "";
 }

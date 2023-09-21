@@ -8,7 +8,10 @@ const container = document.getElementById('root')
 const root = createRoot(container)
 
 root.render(
-    <React.StrictMode>
+    // Have StrictMode disabled for now to make text displaying not a nightmare
+    // Will re-enable it when the game is finished to be able to debug properly 
+
+    //<React.StrictMode>
         <App/>
-    </React.StrictMode>
+    //</React.StrictMode>
 )

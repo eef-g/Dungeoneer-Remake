@@ -1,6 +1,8 @@
 import React from "react";
 import ImageButton from "./ImageButton";
 import buttonImage from "../assets/images/button-bg.png";
+import cooldownButtonImage from "../assets/images/disabled-button-bg.png";
+// ^^^ Need to make a greyed out button image that lets us show when the button is on cooldown
 
 export default function CombatChoices(props) {
 
@@ -18,23 +20,27 @@ export default function CombatChoices(props) {
   return (
     <div className="CombatChoices Display" style={combat_style}>
       <ImageButton
-        backgroundImage={buttonImage}
-        onClick={props.AttackFunction}
+        backgroundImage={props.disabled ? cooldownButtonImage : buttonImage}
+        //backgroundImage={buttonImage}
+        onClick={props.disabled ? null: props.AttackFunction}
         text="Attack"
       />
       <ImageButton
-        backgroundImage={buttonImage}
-        onClick={props.BlockFunction}
+        backgroundImage={props.disabled ? cooldownButtonImage : buttonImage}
+        //backgroundImage={buttonImage}
+        onClick={props.disabled ? null : props.BlockFunction}
         text="Block"
       />
       <ImageButton
-        backgroundImage={buttonImage}
-        onClick={props.HealFunction}
+        backgroundImage={props.disabled ? cooldownButtonImage : buttonImage}
+        //backgroundImage={buttonImage}
+        onClick={props.disabled ? null : props.HealFunction}
         text="Heal"
       />
       <ImageButton
-        backgroundImage={buttonImage}
-        onClick={props.RunFunction}
+        backgroundImage={props.disabled ? cooldownButtonImage : buttonImage}
+        //backgroundImage={buttonImage}
+        onClick={props.disabled ? null : props.RunFunction}
         text="Run"
       />
     </div>
