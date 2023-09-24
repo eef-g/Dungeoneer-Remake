@@ -23,7 +23,6 @@ export default function Game() {
             });
         });
 
-
         // Start the loop that will listen for new messages
         // This is the main loop that will listen for new messages from the Go backend
         let estimatedText = statusText; // Have to have this variable to keep track of the current text
@@ -48,12 +47,12 @@ export default function Game() {
         let room_enemy = room_info.Enemy;
         
         // End the game if there are no more enemies
-        if (room_enemy.Name == "Finished") {
+        if (room_enemy.Base.Name == "Finished") {
             // End the game
             await AddTextToQueue("\n> You have defeated all the enemies in the dungeon!").then(async () => {
-                await setIsDisabled(true);
+                setIsDisabled(true);
                 delay(1500).then(() => {
-                    WipeDungeon().then((result) => {
+                    WipeDungeon().then(() => {
                         navigate("/menu");
                         setIsDisabled(false);
                     });   
@@ -61,29 +60,29 @@ export default function Game() {
             });
             return;
         }
-        setMonsterName(room_enemy.Name);
+        setMonsterName(room_enemy.Base.Name);
         setMonsterImagePath(room_enemy.Image);
-        await AddTextToQueue("\n> You are stopped by a " + room_enemy.Name + "!");
+        await AddTextToQueue("\n> You are stopped by a " + room_enemy.Base.Name + "!");
     }
 
     async function NextDungeonRoom() {
         console.log("NextDungeonRoom called");
-        await setIsDisabled(true); // Disable the buttons
+        setIsDisabled(true); // Disable the buttons
         // Chnge to different Go function
         let defeat_text = "\n> You defeat the " + monsterName + "!";
         AddTextToQueue(defeat_text);
-        ProgressInDungeon().then((result) => {
+        ProgressInDungeon().then(() => {
             GetRoomStats().then((final_result) => {
                 UpdateCurrentRoomInfo(final_result);
             });
         });
 
         await delay(1000);
-        await setIsDisabled(false);
+        setIsDisabled(false);
     }
 
     async function Run() {
-        await setIsDisabled(true);
+        setIsDisabled(true);
         AddTextToQueue("\n> You run away from the dungeon!").then(() => {;
             // Wait a few seconds then return to the main menu
             delay(2000).then(() => {

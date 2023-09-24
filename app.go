@@ -5,7 +5,7 @@ import (
 	"context"
 	"log"
 	"eef.dungeoneer/backend/dungeons"
-	"eef.dungeoneer/backend/monsters"
+	"eef.dungeoneer/backend/entities"
 )
 
 // App struct
@@ -59,13 +59,15 @@ func (a *App) ProgressInDungeon(){
 		// Need to create a dummy room & monster so the frontend knows we're done
 		if (a.current_dungeon.CurrentRoom == nil) {
 			a.current_dungeon.CurrentRoom = &dungeons.Room{
-				Enemy: &monsters.Monster{
-					Name: "Finished",
-					HP: 0,
-					Attack: 0,
-					AttackBonus: 0,
-					Image: "",
-				},
+				Enemy: &entities.Monster{
+				  Base: entities.Entity{
+            Name: "Finished",
+            Health: 0,
+            Damage: 0,
+          },
+          AttackBonus: 0,
+          Image: "",
+        },
 				NextRoom: nil,
 			}
 		}

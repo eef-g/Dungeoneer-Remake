@@ -2,12 +2,12 @@ package dungeons
 import (
 	"fmt"
 	"math/rand"
-	"eef.dungeoneer/backend/monsters"	
+	"eef.dungeoneer/backend/entities"	
 )
 
 
 type Room struct {
-	Enemy *monsters.Monster
+	Enemy *entities.Monster
 	NextRoom *Room
 }
 
@@ -17,7 +17,7 @@ type Dungeon struct {
 	LastRoom *Room
 	CurrentRoom *Room
 	NumRooms int
-	MonsterLog *monsters.Monsters
+	MonsterLog *entities.Monsters
 }
 
 func NewDungeon() *Dungeon {
@@ -26,7 +26,7 @@ func NewDungeon() *Dungeon {
 		LastRoom: nil,
 		CurrentRoom: nil,
 		NumRooms: 0,
-		MonsterLog: monsters.GenerateMonsters(),
+		MonsterLog: entities.GenerateMonsters(),
 	};
 	return dungeon;
 }
