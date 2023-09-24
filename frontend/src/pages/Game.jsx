@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
-import { AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats, ProgressInDungeon } from "../../wailsjs/go/main/App";
+import { CombatTurn, AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats, ProgressInDungeon } from "../../wailsjs/go/main/App";
 import Monster from "../components/Monster";
 import CombatChoices from "../components/CombatChoices";
 import StatusText from "../components/StatusText";
@@ -42,7 +42,8 @@ export default function Game() {
     async function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    
+ 
+    // Move this logic to the backend eventually
     async function UpdateCurrentRoomInfo(room_info){
         let room_enemy = room_info.Enemy;
         
@@ -65,6 +66,7 @@ export default function Game() {
         await AddTextToQueue("\n> You are stopped by a " + room_enemy.Base.Name + "!");
     }
 
+    // This is now in the backend, but will keep it here to test and make sure the backend works
     async function NextDungeonRoom() {
         console.log("NextDungeonRoom called");
         setIsDisabled(true); // Disable the buttons
@@ -110,7 +112,22 @@ export default function Game() {
     React.useEffect(() => {
         console.log("isDisabled: " + isDisabled);
     }, [isDisabled]);
- 
+
+    async function Attack() {
+      setIsDisabled(true);
+      // Run the CombatTurn backend function and check the result packet
+      await CombatTurn("attack").then((result) => {
+        // If we progress in the dungeon, then follow the steps to do so
+        if(result.NextRoom) {
+          AddTextToQueue("\n> You defeat the " + monsterName + "!");
+          GetRoomStats().then((room_result) => {
+            UpdateCurrentRoomInfo(room_result);
+          });
+        }
+      });
+    await delay(1000);
+    setIsDisabled(false);
+    }
 
     return (
         // Eventually, replace the main <div> w/ a <BackgroundImage> component
@@ -119,7 +136,7 @@ export default function Game() {
             <StatusText text={statusText}/>
             <CombatChoices
                 disabled={isDisabled} 
-                AttackFunction={NextDungeonRoom}
+                AttackFunction={Attack}
                 BlockFunction={NextDungeonRoom}
                 HealFunction={NextDungeonRoom}
                 RunFunction={Run}

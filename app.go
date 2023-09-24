@@ -3,6 +3,7 @@ package main
 import (
 	"container/list"
 	"context"
+	"fmt"
 	"log"
 	"eef.dungeoneer/backend/dungeons"
 	"eef.dungeoneer/backend/entities"
@@ -13,6 +14,7 @@ type App struct {
 	ctx context.Context
 	num_rooms int
 	current_dungeon *dungeons.Dungeon
+  curr_player *entities.Player
 	text_queue list.List
 }
 
@@ -27,6 +29,7 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	a.num_rooms = 0
 	a.current_dungeon = dungeons.NewDungeon()
+  a.curr_player = CreatePlayer()
 	a.text_queue = list.List{}
 }
 
@@ -81,14 +84,73 @@ func (a *App) DungeonToString() string{
 	return "No dungeon generated yet";
 }
 
-func (a * App) AddTextToQueue(text string) {
+func (a *App) AddTextToQueue(text string) {
 	a.text_queue.PushBack(text);
 	log.Default().Println("Added text to queue: " + text);
 }
 
-func (a* App) CheckTextQueue() string {
+func (a *App) CheckTextQueue() string {
 	if(a.text_queue.Len() > 0) {
 		return a.text_queue.Remove(a.text_queue.Front()).(string);
 	}
 	return "";
+}
+
+func CreatePlayer() *entities.Player{
+  // Eventually, want to go and replace player creation w/ reading a savel file
+  player := entities.NewPlayer("Eef", 20, 5);
+  return player
+}
+
+
+// Combat Logic
+type ResultPacket struct{
+  NextRoom bool
+  // Will add more here
+};
+
+
+func (a *App) CombatTurn(decision string) *ResultPacket{
+  // Debug logging -- for sanity checking when testing
+  log_output := fmt.Sprintf("%v has decided to %v", a.curr_player.Name, decision);
+  log.Print(log_output);
+  
+  // Prep the return packet for the outcome
+  return_packet := ResultPacket{
+    NextRoom: false,
+  }
+
+  // Set up the variables we'll use
+  current_enemy := a.current_dungeon.CurrentRoom.Enemy;
+  player := a.curr_player;
+
+  switch decision {
+    case "attack":
+      log.Print("Attacking...");
+      start_health := current_enemy.Base.Health;
+      current_enemy.Base.Health = entities.Attack(&player.Entity, &current_enemy.Base);
+      dmg_dealt := start_health - current_enemy.Base.Health;
+      a.AddTextToQueue(fmt.Sprintf("\n> %v does %d damage to the %v!", player.Entity.Name, dmg_dealt, current_enemy.Base.Name));
+
+
+      // Eventually have the monster fight back
+      // Room progression Logic
+      if(current_enemy.Base.Health <= 0) {
+        a.ProgressInDungeon();
+        return_packet.NextRoom = true;
+      }
+
+    case "block":
+      log.Print("Blocking...");
+      // Will do this logic later :)
+
+    case "heal":
+      log.Print("Healing...");
+      // Will do this logic later :)
+
+    default:
+      // Catch anything
+      log.Print("Unkown case detected. Ignoring.");
+  }
+  return &return_packet;
 }

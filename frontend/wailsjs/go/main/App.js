@@ -10,6 +10,10 @@ export function CheckTextQueue() {
   return window['go']['main']['App']['CheckTextQueue']();
 }
 
+export function CombatTurn(arg1) {
+  return window['go']['main']['App']['CombatTurn'](arg1);
+}
+
 export function DungeonToString() {
   return window['go']['main']['App']['DungeonToString']();
 }
