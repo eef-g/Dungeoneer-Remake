@@ -9,12 +9,13 @@ export default function CombatChoices(props) {
   const combat_style = {
     position: "absolute",
     bottom: "2%",
+    left: "3%",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
     alignItems: "center",
-    width: "100vw",
+    width: "94vw",
   };
 
   return (

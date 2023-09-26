@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
-import { CombatTurn, AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats, ProgressInDungeon } from "../../wailsjs/go/main/App";
+import { CombatTurn, AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats} from "../../wailsjs/go/main/App";
 import Monster from "../components/Monster";
 import CombatChoices from "../components/CombatChoices";
 import StatusText from "../components/StatusText";
+import BackgroundImage from "../components/BackgroundImage";
+import combatBg from "../assets/images/combat-bgv2.png" // Tell webpack this JS file uses this image
 
 export default function Game() {
     const navigate  = useNavigate(); // Get the history object using the useHistory hook
@@ -66,23 +68,6 @@ export default function Game() {
         await AddTextToQueue("\n> You are stopped by a " + room_enemy.Base.Name + "!");
     }
 
-    // This is now in the backend, but will keep it here to test and make sure the backend works
-    async function NextDungeonRoom() {
-        console.log("NextDungeonRoom called");
-        setIsDisabled(true); // Disable the buttons
-        // Chnge to different Go function
-        let defeat_text = "\n> You defeat the " + monsterName + "!";
-        AddTextToQueue(defeat_text);
-        ProgressInDungeon().then(() => {
-            GetRoomStats().then((final_result) => {
-                UpdateCurrentRoomInfo(final_result);
-            });
-        });
-
-        await delay(1000);
-        setIsDisabled(false);
-    }
-
     async function Run() {
         setIsDisabled(true);
         AddTextToQueue("\n> You run away from the dungeon!").then(() => {;
@@ -114,10 +99,7 @@ export default function Game() {
     }, [isDisabled]);
 
     async function Attack() {
-      setIsDisabled(true);
-      // Run the CombatTurn backend function and check the result packet
-      await CombatTurn("attack").then((result) => {
-        // If we progress in the dungeon, then follow the steps to do so
+      await CombatChoice("attack").then((result) =>{
         if(result.NextRoom) {
           AddTextToQueue("\n> You defeat the " + monsterName + "!");
           GetRoomStats().then((room_result) => {
@@ -125,22 +107,28 @@ export default function Game() {
           });
         }
       });
-    await delay(1000);
-    setIsDisabled(false);
+      await delay(1000);
+      setIsDisabled(false);
+    }
+
+    async function CombatChoice(choice) {
+      setIsDisabled(true);
+      let outcome_packet = await CombatTurn(choice);
+      return outcome_packet;
     }
 
     return (
         // Eventually, replace the main <div> w/ a <BackgroundImage> component
-        <div>
+        <BackgroundImage backgroundImage={combatBg}>
             <Monster image={monsterImagePath} name={monsterName}/>
             <StatusText text={statusText}/>
             <CombatChoices
                 disabled={isDisabled} 
                 AttackFunction={Attack}
-                BlockFunction={NextDungeonRoom}
-                HealFunction={NextDungeonRoom}
+                BlockFunction={Run}
+                HealFunction={Run}
                 RunFunction={Run}
             />
-        </div>
+        </BackgroundImage>
     );
 }

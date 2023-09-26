@@ -5,7 +5,7 @@ export default function StatusText(props) {
     const textBoxRef = React.useRef(null);
     
     const textBox_style = {
-        width: "95vw",
+        width: "90vw",
         height: "30vh",
         backgroundColor: "#696969",
         border: "solid",
@@ -14,7 +14,7 @@ export default function StatusText(props) {
         overflow: "auto",
         position: "absolute",
         bottom: "25%",
-        left: "2%",
+        left: "4%",
         textAlign: "left",
         color: "yellow",
         fontFamily: "Runescape",
