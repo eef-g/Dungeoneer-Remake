@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import "../../wailsjs/runtime/runtime.js";
 import { CombatTurn, AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats} from "../../wailsjs/go/main/App";
-import { subscribe, unsubscribe } from "../events";
 import Monster from "../components/Monster";
 import CombatChoices from "../components/CombatChoices";
 import StatusText from "../components/StatusText";
@@ -14,10 +14,14 @@ export default function Game() {
     let [statusText, setStatusText] = React.useState("");
     let [monsterName, setMonsterName] = React.useState("");
     let [monsterImagePath, setMonsterImagePath] = React.useState("");
-    
+    let eventPickup = false;  
+
+
     // This is run whenever the component is loaded
     React.useEffect(() => {
-        subscribe("CombatTurn", logCombat(EventTarget));
+        window.runtime.EventsOn("CombatTurn", function(event){
+          console.log(event);
+        });
         AddTextToQueue("\n> You enter the dungeon!").then(() => {
             DungeonToString().then((result) => {
                 console.log(result);
@@ -39,7 +43,10 @@ export default function Game() {
             });
         }, 250);
 
-        return () => clearInterval(interval);
+        return () => {
+          clearInterval(interval);
+          window.runtime.EventsOff("CombatTurn");
+        }
     }, []);
 
     // Delay function to call if I need to wait X milliseconds
@@ -48,9 +55,6 @@ export default function Game() {
     }
 
 
-    function logCombat(eventInfo){
-      console.log(eventInfo);
-    }
     // Move this logic to the backend eventually
     async function UpdateCurrentRoomInfo(room_info){
         let room_enemy = room_info.Enemy;
@@ -100,26 +104,16 @@ export default function Game() {
         }
     }
 
-    async function Attack() {
-      await CombatChoice("attack");
-      // await CombatChoice("attack").then((result) =>{
-        // if(result.NextRoom) {
-          // AddTextToQueue("\n> You defeat the " + monsterName + "!");
-          // GetRoomStats().then((room_result) => {
-            // UpdateCurrentRoomInfo(room_result);
-          // });
-        // }
-      // });
+    async function CombatChoice(choice) {
+      setIsDisabled(true);
+      await CombatTurn(choice);
       await delay(1000);
       setIsDisabled(false);
     }
-
-    async function CombatChoice(choice) {
-      setIsDisabled(true);
-      let outcome_packet = await CombatTurn(choice);
-      return outcome_packet;
+    
+    async function Attack(){
+      CombatChoice("attack");
     }
-
     return (
         // Eventually, replace the main <div> w/ a <BackgroundImage> component
         <BackgroundImage backgroundImage={combatBg}>

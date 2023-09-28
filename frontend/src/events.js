@@ -1,7 +1,8 @@
 //events.js
+import "../wailsjs/runtime/runtime.js"
 
 function subscribe(eventName, listener) {
-  document.addEventListener(eventName, listener);
+  window.runtime.EventsOn(eventName, listener);
 }
 
 function unsubscribe(eventName, listener) {

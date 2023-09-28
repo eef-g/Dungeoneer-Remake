@@ -107,6 +107,6 @@ func CreatePlayer() *entities.Player{
 // Combat Logic
 func (a *App) CombatTurn(decision string) {
   event_data := backend.CombatTurn(a.curr_player, a.current_dungeon, decision);
+  runtime.LogInfo(a.ctx, event_data.ToString());
   runtime.EventsEmit(a.ctx, "CombatTurn", event_data);
-  log.Default().Print("Emitting event to frontend");
 }
