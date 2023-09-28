@@ -84,6 +84,28 @@ func (d *Dungeon) Print() {
 	fmt.Println(d.ToString());
 }
 
+
+func (d *Dungeon) ProgressInDungeon(){
+  d.CurrentRoom = d.CurrentRoom.NextRoom;
+  // If the current room is nil, then the dungeon is finished
+  // Need to create a dummy room & monster so the frontend knows we're done
+  if (d.CurrentRoom == nil) {
+    d.CurrentRoom = &Room{
+      Enemy: &entities.Monster{
+        Base: entities.Entity{
+          Name: "Finished",
+          Health: 0,
+          Damage: 0,
+        },
+        AttackBonus: 0,
+        Image: "",
+      },
+      NextRoom: nil,
+    }
+  }
+
+}	
+
 func (d *Dungeon) ToString() string {
 	// Loop through the dungeon and print out the rooms
 	fmt.Println("");

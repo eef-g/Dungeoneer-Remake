@@ -3,10 +3,11 @@ package main
 import (
 	"container/list"
 	"context"
-	"fmt"
 	"log"
+	"eef.dungeoneer/backend"
 	"eef.dungeoneer/backend/dungeons"
 	"eef.dungeoneer/backend/entities"
+  "github.com/wailsapp/wails/v2/pkg/runtime" // This package is what lets us use runtime methods
 )
 
 // App struct
@@ -104,53 +105,8 @@ func CreatePlayer() *entities.Player{
 
 
 // Combat Logic
-type ResultPacket struct{
-  NextRoom bool
-  // Will add more here
-};
-
-
-func (a *App) CombatTurn(decision string) *ResultPacket{
-  // Debug logging -- for sanity checking when testing
-  log_output := fmt.Sprintf("%v has decided to %v", a.curr_player.Name, decision);
-  log.Print(log_output);
-  
-  // Prep the return packet for the outcome
-  return_packet := ResultPacket{
-    NextRoom: false,
-  }
-
-  // Set up the variables we'll use
-  current_enemy := a.current_dungeon.CurrentRoom.Enemy;
-  player := a.curr_player;
-
-  switch decision {
-    case "attack":
-      log.Print("Attacking...");
-      start_health := current_enemy.Base.Health;
-      current_enemy.Base.Health = entities.Attack(&player.Entity, &current_enemy.Base);
-      dmg_dealt := start_health - current_enemy.Base.Health;
-      a.AddTextToQueue(fmt.Sprintf("\n> %v does %d damage to the %v!", player.Entity.Name, dmg_dealt, current_enemy.Base.Name));
-
-
-      // Eventually have the monster fight back
-      // Room progression Logic
-      if(current_enemy.Base.Health <= 0) {
-        a.ProgressInDungeon();
-        return_packet.NextRoom = true;
-      }
-
-    case "block":
-      log.Print("Blocking...");
-      // Will do this logic later :)
-
-    case "heal":
-      log.Print("Healing...");
-      // Will do this logic later :)
-
-    default:
-      // Catch anything
-      log.Print("Unkown case detected. Ignoring.");
-  }
-  return &return_packet;
+func (a *App) CombatTurn(decision string) {
+  event_data := backend.CombatTurn(a.curr_player, a.current_dungeon, decision);
+  runtime.EventsEmit(a.ctx, "CombatTurn", event_data);
+  log.Default().Print("Emitting event to frontend");
 }

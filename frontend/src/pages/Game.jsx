@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { CombatTurn, AddTextToQueue, CheckTextQueue, WipeDungeon, DungeonToString, GetRoomStats} from "../../wailsjs/go/main/App";
+import { subscribe, unsubscribe } from "../events";
 import Monster from "../components/Monster";
 import CombatChoices from "../components/CombatChoices";
 import StatusText from "../components/StatusText";
@@ -16,6 +17,7 @@ export default function Game() {
     
     // This is run whenever the component is loaded
     React.useEffect(() => {
+        subscribe("CombatTurn", logCombat(EventTarget));
         AddTextToQueue("\n> You enter the dungeon!").then(() => {
             DungeonToString().then((result) => {
                 console.log(result);
@@ -44,7 +46,11 @@ export default function Game() {
     async function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
- 
+
+
+    function logCombat(eventInfo){
+      console.log(eventInfo);
+    }
     // Move this logic to the backend eventually
     async function UpdateCurrentRoomInfo(room_info){
         let room_enemy = room_info.Enemy;
@@ -94,19 +100,16 @@ export default function Game() {
         }
     }
 
-    React.useEffect(() => {
-        console.log("isDisabled: " + isDisabled);
-    }, [isDisabled]);
-
     async function Attack() {
-      await CombatChoice("attack").then((result) =>{
-        if(result.NextRoom) {
-          AddTextToQueue("\n> You defeat the " + monsterName + "!");
-          GetRoomStats().then((room_result) => {
-            UpdateCurrentRoomInfo(room_result);
-          });
-        }
-      });
+      await CombatChoice("attack");
+      // await CombatChoice("attack").then((result) =>{
+        // if(result.NextRoom) {
+          // AddTextToQueue("\n> You defeat the " + monsterName + "!");
+          // GetRoomStats().then((room_result) => {
+            // UpdateCurrentRoomInfo(room_result);
+          // });
+        // }
+      // });
       await delay(1000);
       setIsDisabled(false);
     }
