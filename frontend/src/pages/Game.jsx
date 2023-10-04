@@ -14,45 +14,38 @@ export default function Game() {
     let [statusText, setStatusText] = React.useState("");
     let [monsterName, setMonsterName] = React.useState("");
     let [monsterImagePath, setMonsterImagePath] = React.useState("");
-    let eventPickup = false;  
-
-
-    // This is run whenever the component is loaded
-    React.useEffect(() => {
-        window.runtime.EventsOn("CombatTurn", function(event){
-          console.log(event);
-        });
-        AddTextToQueue("\n> You enter the dungeon!").then(() => {
-            DungeonToString().then((result) => {
-                console.log(result);
-                GetRoomStats().then(async (result) => {
-                    await UpdateCurrentRoomInfo(result);
-                });
-            });
-        });
-
-        // Start the loop that will listen for new messages
-        // This is the main loop that will listen for new messages from the Go backend
-        let estimatedText = statusText; // Have to have this variable to keep track of the current text
-        const interval = setInterval(() => {
-            CheckTextQueue().then(async (result) => {
-                if (result != "") {
-                    await UpdateText(result, estimatedText);
-                    estimatedText += result;
-                }
-            });
-        }, 250);
-
-        return () => {
-          clearInterval(interval);
-          window.runtime.EventsOff("CombatTurn");
-        }
-    }, []);
 
     // Delay function to call if I need to wait X milliseconds
     async function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    // This is run whenever the component is loaded
+    React.useEffect(() => {
+        // Event handling
+        window.runtime.EventsOn("CombatTurn", function(event){
+          console.log(event);
+          UpdateText(event.CombatLog, statusText);
+          if(event.NewRoom.Enemy.Base.Name != "None"){
+            GetRoomStats().then(async (result) =>{
+              await UpdateCurrentRoomInfo(result);
+            });
+          }
+        });
+        
+        
+        UpdateText("\n> You enter the dungeon!", statusText).then(() => {
+              GetRoomStats().then(async (result) => {
+                  await UpdateCurrentRoomInfo(result);
+              });
+        });
+
+        // This is run when the component is unloaded
+        return () => {
+          clearInterval(interval);
+          window.runtime.EventsOff("CombatTurn");
+        }
+    }, []);
 
 
     // Move this logic to the backend eventually
@@ -110,10 +103,11 @@ export default function Game() {
       await delay(1000);
       setIsDisabled(false);
     }
-    
+
     async function Attack(){
-      CombatChoice("attack");
+      await CombatChoice("attack");
     }
+    
     return (
         // Eventually, replace the main <div> w/ a <BackgroundImage> component
         <BackgroundImage backgroundImage={combatBg}>
